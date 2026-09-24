@@ -38,4 +38,3 @@ databases:
     databaseName: my_parlour
     user: my_parlour_user
     plan: free
-    type: psql
