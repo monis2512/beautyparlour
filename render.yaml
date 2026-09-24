@@ -10,6 +10,9 @@ services:
           name: my-parlour-db
           property: connectionString
 
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:${DATABASE_URL}
+
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: my-parlour-db
