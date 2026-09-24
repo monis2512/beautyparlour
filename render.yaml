@@ -1,40 +1,41 @@
 services:
   - type: web
-    name: Luxury-Edits
-    runtime: docker
+    name: luxury-edits
+    runtime: java
     plan: free
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
+
+    buildCommand: ./mvnw clean package -DskipTests
+
+    startCommand: java -jar target/*.jar
+
     envVars:
-      - key: ADMIN_USERNAME
-        sync: false
-      - key: ADMIN_PASSWORD
-        sync: false
-      - key: DB_HOST
+      - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: my-parlour-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: my-parlour-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: my-parlour-db
-          property: database
-      - key: DB_USERNAME
+          property: connectionString
+
+      - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: my-parlour-db
           property: user
-      - key: DB_PASSWORD
+
+      - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
           name: my-parlour-db
           property: password
-      - key: JAVA_TOOL_OPTIONS
-        value: -Xmx450m
 
-  databases:
-    - name: carfixhub-db
-      plan: free
-      databaseName: carfixhub
-      user: carfixhub
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+
+      - key: ADMIN_USERNAME
+        sync: false
+
+      - key: ADMIN_PASSWORD
+        sync: false
+
+databases:
+  - name: my-parlour-db
+    databaseName: my_parlour
+    user: my_parlour_user
+    plan: free
+    type: psql
