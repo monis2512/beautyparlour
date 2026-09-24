@@ -1,0 +1,6 @@
+import { Component, inject } from '@angular/core'; import { CommonModule } from '@angular/common'; import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'; import { ApiService } from '../services/api.service';
+@Component({selector:'app-home',standalone:true,imports:[CommonModule,ReactiveFormsModule],templateUrl:'./home.component.html'})
+export class HomeComponent { fb=inject(FormBuilder); api=inject(ApiService); sent=false; error='';
+ form=this.fb.nonNullable.group({name:['',[Validators.required,Validators.minLength(2)]],mobileNumber:['',[Validators.required,Validators.pattern(/^[6-9][0-9]{9}$/)]],service:['Hair & Styling',Validators.required],question:['',[Validators.required]],description:['',[Validators.maxLength(2000)]]});
+ submit(){this.sent=false;this.error=''; if(this.form.invalid){this.form.markAllAsTouched();setTimeout(()=>document.querySelector('.error')?.scrollIntoView({behavior:'smooth',block:'center'}));return;} this.api.create(this.form.getRawValue()).subscribe({next:()=>{this.sent=true;this.form.reset({name:'',mobileNumber:'',service:'Hair & Styling',question:'',description:''});},error:()=>this.error='Something went wrong. Please try again.'});}
+}
