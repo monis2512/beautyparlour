@@ -34,7 +34,7 @@ services:
         value: -Xmx450m
 
   databases:
-    name: carfixhub-db
-    plan: free
-    databaseName: carfixhub
-    user: carfixhub
+    - name: carfixhub-db
+      plan: free
+      databaseName: carfixhub
+      user: carfixhub
