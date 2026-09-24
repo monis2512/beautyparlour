@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: my-parlour
+    name: Luxury-Edits
     runtime: docker
     plan: free
     dockerfilePath: ./Dockerfile
