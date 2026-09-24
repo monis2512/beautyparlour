@@ -5,13 +5,23 @@ services:
     plan: free
 
     envVars:
-      - key: DATABASE_URL
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+
+      - key: DB_HOST
         fromDatabase:
           name: my-parlour-db
-          property: connectionString
+          property: host
 
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:${DATABASE_URL}
+      - key: DB_PORT
+        fromDatabase:
+          name: my-parlour-db
+          property: port
+
+      - key: DB_NAME
+        fromDatabase:
+          name: my-parlour-db
+          property: database
 
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
