@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: my-parlour
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    envVars:
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: DB_HOST
+        fromDatabase:
+          name: my-parlour-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: my-parlour-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: my-parlour-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: my-parlour-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: my-parlour-db
+          property: password
+      - key: JAVA_TOOL_OPTIONS
+        value: -Xmx450m
+
+  - type: pgsql
+    name: my-parlour-db
+    plan: free
+    databaseName: myparlour
+    user: myparlour
