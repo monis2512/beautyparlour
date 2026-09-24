@@ -1,0 +1,62 @@
+<div class="admin-page">
+  <header>
+    <a class="brand" href="/">✦ My Parlour</a>
+    <a class="back" href="/">← Public page</a>
+  </header>
+
+  <main *ngIf="!loading && !logged" class="login-card">
+    <div class="lock">✦</div>
+    <p class="eyebrow">PRIVATE AREA</p>
+    <h1>Admin Login</h1>
+    <p>Sign in to view customer enquiries.</p>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <input formControlName="username" autocomplete="username" placeholder="Username">
+      <input type="password" formControlName="password" autocomplete="current-password" placeholder="Password">
+      <button type="submit">Sign in →</button>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </main>
+
+  <main *ngIf="!loading && logged" class="dashboard">
+    <div class="dash-top">
+      <div>
+        <p class="eyebrow">MY PARLOUR</p>
+        <h1>Customer Enquiries</h1>
+        <p>People who have asked to be contacted.</p>
+      </div>
+      <button class="logout" (click)="logout()">Logout</button>
+    </div>
+
+    <div class="stat">
+      <strong>{{ queries.length }}</strong>
+      <span>Total enquiries</span>
+    </div>
+
+    <div class="empty" *ngIf="!queries.length">No enquiries yet.</div>
+
+    <article class="query" *ngFor="let q of queries">
+      <div class="qhead">
+        <div>
+          <h2>{{ q.name }}</h2>
+          <span>{{ formatDate(q.createdAt) }}</span>
+        </div>
+        <button class="delete" (click)="delete(q.id!)">Delete</button>
+      </div>
+
+      <div class="chips">
+        <span>{{ q.service }}</span>
+        <span>{{ q.question }}</span>
+      </div>
+
+      <div class="details" *ngIf="q.description">
+        <small>CUSTOMER DETAILS</small>
+        <p>{{ q.description }}</p>
+      </div>
+
+      <div class="contact">
+        <b>{{ q.mobileNumber }}</b>
+        <button (click)="call(q.mobileNumber)">☎ Contact customer</button>
+      </div>
+    </article>
+  </main>
+</div>
